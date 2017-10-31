@@ -8,13 +8,116 @@
   <meta http-equiv="Cache-Control" content="no-siteapp" />
   <link rel='stylesheet' href='/stylesheets/lib/normalize.min.css' />
   <title>登录</title>
+  <script src="javascripts/lib/jquery.min.js"></script>
 </head>
 <body>
 
+<div class="container">
+  <div class="panel">
+    <p class="title">登&nbsp;录</p>
+    <div>
+      <ul class="uli">
+        <li>账&nbsp;&nbsp;号：<input value="admin" type="text" id="name"  placeholder="用户名"></li>
+        <li>密&nbsp;&nbsp;码：<input value="12345" type="password" id="pwd" placeholder="密码"></li>
+        <li><button id="login" class="btn">确认</button></li>
+        <li><span id="msg"></span></li>
+      </ul>
+    </div>
 
-<p>登录</p>
+  </div>
+
+</div>
 
 
+<style media="screen">
+.container{
+  width: 100%;
+  text-align: center;
+}
+.uli{
+  list-style: none;
+  padding: 0;
+}
+.uli li{
+  margin-top: 20px;
+}
+.uli input{
+  background-position-x: 12px;
+  background-position: 14px 10px;
+  height: 40px;
+  width: 300px;
+  background-repeat: no-repeat;
+  padding-left: 46px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+.panel{
+  padding: 20px;
+  margin: 200px auto 0 auto;
+  width: 500px;
+  height: 300px;
+  border: 1px solid #ccc;
+}
+.title{
+  margin: auto;
+  font-size: 18px;
+}
+.btn{
+  font-size: 18px;
+  color: #fff;
+  width: 360px;
+  height: 40px;
+  text-align: center;
+  background-color: #1FB9FF;
+  border-radius: 5px;
+  line-height: 40px;
+  outline: none;
+  border: none;
+}
+.btn:hover{
+  background-color: #1FB9F0;
+  cursor: pointer;
+}
+#msg{
+  color: red;
+}
+</style>
+
+<script type="text/javascript">
+$(function(){
+
+  $('#login').on('click',function(){
+    var name=$('#name').val().trim();
+    var pwd=$('#pwd').val().trim();
+
+    if(name && pwd){
+      $.ajax({
+        url:'/user/login',
+        data:{name:name, pwd:pwd},
+        type:'post',
+        success:function(res){
+          if(res.status===200){
+            var expiredays=1;
+            var exdate=new Date();
+                exdate.setDate(exdate.getDate()+expiredays);
+                document.cookie= "token=" +escape(res.content)+
+                ((expiredays==null) ? "" : ";expires="+exdate.toGMTString())+";path=/";
+                location.href='/';
+          }else{
+            $('#msg').text(res.err_msg)
+          }
+        }
+      })
+    }else{
+        $('#msg').text('不存在的！')
+    }
+
+  })
+
+})
+</script>
 
 </body>
 </html>

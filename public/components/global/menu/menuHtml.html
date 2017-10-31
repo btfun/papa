@@ -1,0 +1,21 @@
+<el-row class="layout-header">
+  <el-col :span="24">
+    <el-col :span="2" class="logo">
+      <div class="header-logo">
+        logo
+      </div>
+    </el-col>
+    <el-col :span="18">
+      <div class="header-line">
+           <svg @click="menuToogle" class="menu"   viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+             <path :d="Spath" ></path>
+           </svg>
+      </div>
+    </el-col>
+    <el-col :span="4">
+      <div class="header-userinfo">
+            关羽打开水
+      </div>
+    </el-col>
+ </el-col>
+</el-row>

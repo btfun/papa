@@ -33,7 +33,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 //资源托管
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'dist')));
 
 app.use('/', require('./routes/index'));
 
@@ -68,7 +68,7 @@ process.on("uncaughtException", function (err) {
   //系统级异常监控
   console.info('进程异常:',err.message + "\n\n" + err.stack + "\n\n" + err.toString());
 
- 
+
 
   setTimeout(function () {
     process.exit(1);

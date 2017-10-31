@@ -29,10 +29,27 @@
    menuComponent:    'components/global/menu/menuComponent',
    menuTmpl:         'components/global/menu/menuHtml',
    //////////////////店铺主页 模块///////////////////
-   shop:{
+   home:{
      //主页
-     indexModule: 'components/manager/shop/home/pages/index/indexModule',
-     indexTmpl:   'components/manager/shop/home/pages/index/indexHtml',
+     indexModule: 'components/manager/index/module',
+     indexTmpl:   'components/manager/index/indexHtml',
+     
+     mailSetUp: {
+       indexModule: 'components/manager/index/mailSetUp/mailModule',
+       indexTmpl:   'components/manager/index/mailSetUp/indexHtml',
+     },
+     papaSetUp: {
+       indexModule: 'components/manager/index/papaSetUp/papaModule',
+       indexTmpl:   'components/manager/index/papaSetUp/indexHtml',
+     },
+     mailEdit: {
+       indexModule: 'components/manager/index/mailEdit/mailModule',
+       indexTmpl:   'components/manager/index/mailEdit/indexHtml',
+     },
+     listEdit: {
+       indexModule: 'components/manager/index/listEdit/listModule',
+       indexTmpl:   'components/manager/index/listEdit/indexHtml',
+     },
    }
 
 
@@ -63,12 +80,13 @@
 
   if(typeof define !== 'undefined' && define.amd){
     //浏览器
+    console.log(GLOBAL.version)
     win.requirejs.config({
       baseUrl:  GLOBAL.resourcesUrl||'/',
-      //urlArgs: GLOBAL.version,
+      urlArgs: GLOBAL.version,
       paths: path
     });
-    win.require(['shopHomeIndex']);//这里的不能被替换MD5后缀
+    win.require(['homeIndex']);//这里的不能被替换MD5后缀
   }else if(typeof module !== 'undefined' && module.exports){
     //node环境
     module.exports=path;

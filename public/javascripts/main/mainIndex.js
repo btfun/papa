@@ -18,10 +18,10 @@ define(function(require){
  Vue.use(VueRouter);
 
  /**********全局组件加载 start*****************/
- // require('shopTopComponent');//加载页面顶部组件
+ require('menuComponent');//加载页面顶部组件
 /**********全局组件加载 end*****************/
 
-require('notify')
+// require('notify')
 
  /**
   * 二: 应用全局路由顶级模块入口

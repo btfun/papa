@@ -1,4 +1,5 @@
 *.iml
 dist/
+uploads/
 node_modules/
 .idea/

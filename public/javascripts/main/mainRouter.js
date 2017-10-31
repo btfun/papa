@@ -8,21 +8,24 @@ define(function(require){
   */
 
    const routes = [
-    //  { path:'', redirect:'/index' },
+     { path:'', redirect:'/home' },
      //店铺主页部分
-     { path: '/',         component: resolve => require(['shop.indexModule'],resolve) },
-    //  { path: '/individual',    component: resolve => require(['shop.orderModule'],resolve),
-    //      children: [
-    //        { path: 'cost',     component: resolve => require(['shop.order.costModule'],resolve) },
-    //        { path: 'open',     component: resolve => require(['shop.order.openModule'],resolve) },
-    //        { path: 'recharge', component: resolve => require(['shop.order.rechargeModule'],resolve) },
-    //        { path: 'upgrade',  component: resolve => require(['shop.order.upgradeModule'],resolve) }
-    //      ]
-    //   },
+     { path: '/home',            component: resolve => require(['home.indexModule'],resolve),
+       children: [
+         //邮件设置
+         { path: 'mail/setUp',   component: resolve => require(['home.mailSetUp.indexModule'],resolve) },
+         //爬虫设置
+         { path: 'papa/setUp',   component: resolve => require(['home.papaSetUp.indexModule'],resolve) },
+         //邮件编辑
+         { path: 'mail/Edit',    component: resolve => require(['home.mailEdit.indexModule'],resolve) },
+         //excel文件清洗
+         { path: 'list/Edit',    component: resolve => require(['home.listEdit.indexModule'],resolve) }
+       ]
+      }
      //营业记录部分
-     { path: '/business',    component: resolve => require(['busi.busiModule'], resolve) },
-     { path: '/comment',     component: resolve => require(['busi.commentModule'], resolve) },
-     { path: '/cross',       component: resolve => require(['busi.crossModule'], resolve) }
+    //  { path: '/business',    component: resolve => require(['busi.busiModule'], resolve) },
+    //  { path: '/comment',     component: resolve => require(['busi.commentModule'], resolve) },
+    //  { path: '/cross',       component: resolve => require(['busi.crossModule'], resolve) }
 
 
    ]

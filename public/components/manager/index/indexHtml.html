@@ -1,0 +1,20 @@
+
+<el-row class="layout-container">
+  <el-col :span="2" class="aside">
+    <!--侧边导航  -->
+    <aside >
+      <ul class="menuui">
+        <li :class="0==active ? 'active' :'' "><router-link to="/home/mail/setUp">邮件设置</router-link></li>
+        <li :class="1==active ? 'active' :'' "><router-link to="/home/papa/setUp">爬虫设置</router-link></li>
+        <li :class="2==active ? 'active' :'' "><router-link to="/home/mail/Edit">邮件编辑</router-link></li>
+        <li :class="3==active ? 'active' :'' "><router-link to="/home/list/Edit">文件清洗</router-link></li>
+      </ul>
+    </aside>
+  </el-col>
+  <el-col :span="22" class="content">
+  <!--主体内容  -->
+    <transition name="fade" mode="out-in">
+            <router-view></router-view>
+    </transition>
+  </el-col>
+</el-row>
