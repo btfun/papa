@@ -94,12 +94,6 @@ var util= {
       // document.cookie=c_name+ "=" +escape(value)+
       // ((expiredays==null) ? "" : ";expires="+exdate.toGMTString())+";path=/";
     },
-    removeCookie:(key, options)=>{
-      if (key === undefined) {
-          return false;
-      }
-
-    },
     clearCookie:function(key,domain){
       //clean all cookie
       var keys=document.cookie.match(/[^ =;]+(?=\=)/g);
@@ -111,6 +105,7 @@ var util= {
         if(location.hostname.indexOf('192.168') > -1){
             options.domain=null;//
         }
+        console.log('clearCookie',keys)
           for (var i = keys.length; i--;){
             if(key){
               if(key==keys[i]){

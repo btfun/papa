@@ -2,6 +2,7 @@
 define(function(require){
 
   var Vue = require('vue');
+  var globalUtil = require('globalUtil');
   var that;
 
   Vue.component('home-menu', {
@@ -17,6 +18,10 @@ define(function(require){
     methods:{
       menuToogle(){
         console.log(123)
+      },
+      quit(){
+        globalUtil.util.clearCookie('token', location.hostname);
+        location.href="/login"
       }
     }
   })
