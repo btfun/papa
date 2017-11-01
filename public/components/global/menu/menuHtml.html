@@ -1,21 +1,19 @@
-<el-row class="layout-header">
-  <el-col :span="24">
-    <el-col :span="2" class="logo">
+  <el-row type="flex" justify="start"  class="layout-header">
+    <el-col :xs="3" :sm="4" :md="4" :lg="2" :xl="2" class="logo">
       <div class="header-logo">
         logo
       </div>
     </el-col>
-    <el-col :span="18">
+    <el-col :xs="17" :sm="18" :md="18" :lg="18" :xl="18">
       <div class="header-line">
            <svg @click="menuToogle" class="menu"   viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" >
              <path :d="Spath" ></path>
            </svg>
       </div>
     </el-col>
-    <el-col :span="4">
-      <div class="header-userinfo">
+    <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4" class="hidden-xs-only">
+      <div class="header-userinfo" style="color:red">
             关羽打开水
       </div>
     </el-col>
- </el-col>
-</el-row>
+  </el-row>

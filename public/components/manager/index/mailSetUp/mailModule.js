@@ -6,17 +6,20 @@ return {
   template: require('text!home.mailSetUp.indexTmpl.html'),
   data:function(){
     return {
-      list: []
+      mailFirstData: {
+        host: '',
+        port: '',
+        account: '',
+        password: '',
+        pwdoff: true,
+        toggle: false
+      }
+      // mailFirstData: {}
     }
   },
   created:function(){
     that=this;
-    for (var i = 0; i < 100; i++) {
-       that.list.push({
-         name: '兜兜'+i,
-         age: 0+i
-       })
-    }
+
   },
   methods:{
 

@@ -1,7 +1,49 @@
+<div class="content-papaSetUp">
 
-<el-row class="content-papaSetUp">
-  <el-col :span="24" class="aside">
-     666
+  <div class="">
+    <el-tabs type="border-card" v-model="activeName" >
+      <el-tab-pane label="数据列表" name="datalist">
+      <!-- 数据列表 start -->
+        <ul>
+          <li><el-input  placeholder="关键字搜索"></el-input></li>
+          <li><el-button type="primary" >确定</el-button></li>
+        </ul>
+        <el-table :data="list"   border style="width: 100%">
+           <el-table-column prop="name" label="姓名" width="180"> </el-table-column>
+           <el-table-column prop="age" label="年龄" > </el-table-column>
+         </el-table>
 
-  </el-col>
-</el-row>
+      <!-- 数据列表 end -->
+      </el-tab-pane>
+      <el-tab-pane label="爬虫设置" name="setUp">
+      <!-- 黑名单设置 start -->
+
+        <div class="panel">
+          <p>数据黑名单</p>
+          <ul>
+            <li v-for="item in dataFilterList"><el-input  placeholder="输入过滤关键字"></el-input></li>
+          </ul>
+        </div>
+          <hr>
+        <div class="panel">
+          <p>网站白名单：</p>
+          <ul>
+            <li v-for="item in whiteSiteList"><el-input  placeholder="输入完整的网站地址"></el-input></li>
+          </ul>
+        </div>
+        <hr>
+        <div class="panel">
+          <p>网站黑名单：</p>
+          <ul>
+            <li v-for="item in blackSiteList"><el-input  placeholder="输入完整的网站地址"></el-input></li>
+          </ul>
+        </div>
+      <!-- 黑名单设置 end -->
+      </el-tab-pane>
+      <!-- <el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane> -->
+    </el-tabs>
+
+  </div>
+
+
+</div>
