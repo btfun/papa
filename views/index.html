@@ -8,8 +8,10 @@
   <meta http-equiv="Cache-Control" content="no-siteapp" />
   <title>爬爬系统</title>
   <link rel='stylesheet' href='stylesheets/lib/normalize.min.css' />
-  <link rel='stylesheet' href='stylesheets/lib/webuploader.css' />
+  <!-- <link rel='stylesheet' href='stylesheets/lib/webuploader.css' /> -->
   <link rel='stylesheet' href='stylesheets/lib/element/element.ui.min.css' />
+  <link rel='stylesheet' href='//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css' />
+
   <link rel='stylesheet' href='stylesheets/home.min.css?[[version]]' />
   <script type="text/javascript">
   var GLOBAL={
@@ -28,6 +30,7 @@
       transform: translateX(5px);
       opacity: 0;
     }
+
   </style>
 </head>
 <body>
@@ -37,7 +40,7 @@
   <keep-alive>
     <home-menu></home-menu>
   </keep-alive>
-  
+
   <transition name="fade" mode="out-in">
           <router-view></router-view>
   </transition>

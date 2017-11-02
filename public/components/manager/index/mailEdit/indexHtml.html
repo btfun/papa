@@ -1,7 +1,26 @@
+<div class="content-mailEdit">
+  <div>
+      <p>邮件编辑</p>
+      <div class="fl item">
+        <div style="width:720px;" >
 
-<el-row class="content-mailEdit">
-  <el-col :span="24" class="aside">
-     666
+         <vue-html5-editor :content="content" :height="360" @change="updateData" :auto-height="true">
+         </vue-html5-editor>
 
-  </el-col>
-</el-row>
+        </div>
+        <div class="btns-panel">
+          <ul>
+            <li><el-input type="email"  placeholder="输入预览邮件地址"></el-input></li>
+            <li><el-button @click="sendMail('pre')">发送预览邮件</el-button></li>
+            <li><el-button >保存草稿</el-button></li>
+            <li><el-button type="primary" @click="sendMail">发送邮件</el-button></li>
+            <li><span>120</span>/<span>4000</span></li>
+          </ul>
+
+        </div>
+      </div>
+      <div class="fl item">
+         
+      </div>
+  </div>
+</div>

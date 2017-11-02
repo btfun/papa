@@ -16,6 +16,7 @@
    axios:       'javascripts/lib/vue/axios.min',
    ELEMENT:     'javascripts/lib/element/element.min',
    iNotify:     'javascripts/lib/iNotify.min',
+   vueH5Editor:     'javascripts/lib/vue-html5-editor',
 
    cookiebase64: 'javascripts/lib/cookie.base64.min',
    //base
@@ -33,7 +34,7 @@
      //主页
      indexModule: 'components/manager/index/module',
      indexTmpl:   'components/manager/index/indexHtml',
-     
+
      mailSetUp: {
        indexModule: 'components/manager/index/mailSetUp/mailModule',
        indexTmpl:   'components/manager/index/mailSetUp/indexHtml',

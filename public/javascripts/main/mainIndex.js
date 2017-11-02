@@ -10,12 +10,45 @@ define(function(require){
   var axios = require('axios');
   Vue.prototype.$http = axios;
   var routerIndex = require('routerIndex');
+  var vueEditor=require('vueH5Editor');
 
   var ElementUI = require('ELEMENT');
   var globalUtil=require('globalUtil');
 
+
  Vue.use(ElementUI);
  Vue.use(VueRouter);
+ Vue.use(vueEditor, {
+   name: "vue-html5-editor",
+   showModuleName: true,
+   language: "zh-cn",
+   image: {
+     sizeLimit: 512 * 1024,
+     upload: {
+          url: '/upload/file',
+          headers: {},
+          params: {},
+          fieldName: {}
+      },
+      compress: {
+          width: 1600,
+          height: 1600,
+          quality: 80
+      },
+      uploadHandler(responseText){
+           //default accept json data like  {ok:false,msg:"unexpected"} or {ok:true,data:"image url"}
+           var json = JSON.parse(responseText)
+           if (!json.ok) {
+               alert(json.msg)
+           } else {
+               return json.data
+           }
+       }
+   }
+
+
+ });
+
 
  /**********全局组件加载 start*****************/
  require('menuComponent');//加载页面顶部组件
@@ -42,18 +75,15 @@ const routers = new VueRouter({
   * 三: 应用全局的XHR请求配置
   *
   **/
-
-var loadinginstace;
+ 
   //添加请求拦截器
   axios.interceptors.request.use((config)=>{
-    loadinginstace = ElementUI.Loading.service({ fullscreen: true })
        //在发送请求之前做某事
        config.timeout=2000;
        if(!config.params)config.params={};
        config.params.token=globalUtil.util.getCookie('token');//增加token参数
        return config;
      }, (error)=>{
-       loadinginstace.close()
        //请求错误时做些事
        var config=error.config||{};
        var response=error.response||{};
@@ -69,12 +99,10 @@ var loadinginstace;
 
      //添加响应拦截器
      axios.interceptors.response.use((config)=>{
-          loadinginstace.close()
           //在响应之后做某事
           return config;
         }, (error)=>{
           //请求错误时上报
-          loadinginstace.close()
 
           var config=error.config||{};
           var response=error.response||{};

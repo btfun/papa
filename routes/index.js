@@ -25,7 +25,11 @@ console.log('登录', req.ip)
     version :  timeStamp
    });
 });
-
+/****
+* 登录验证接口
+*
+*
+*****/
 router.post('/user/login', function(req, res, next) {
 var name=req.param('name');
 var pwd=req.param('pwd');
@@ -51,46 +55,117 @@ if(name && pwd){
     err_msg: '账号和密码不能为空'
   };
 }
-
   res.send(result)
+});
 
+/****
+* 发送邮件接口
+*
+*
+*****/
+var nodemailer = require('nodemailer');
+var conf = require("../conf");
+var emailObj=conf.email;
+
+router.post('/send/email', function(req, res, next) {
+
+var emailFrom=req.param('from');
+var content=req.param('content');
+if(!emailFrom || !content){
+  return res.send({
+    status: 400,
+    content: '',
+    err_msg: '发送错误：参数有误'
+  })
+}
+
+var transporter = nodemailer.createTransport({
+    host: emailObj.host,
+    port: emailObj.port,
+    secure: false, // use SSL
+    auth: {
+        user: emailObj.user,
+        pass: emailObj.pass
+    }
+});
+
+var mailOptions = {
+    from: '"小蜜蜂 " <'+emailObj.user+'>', // sender address
+    to: '625672881@qq.com', // list of receivers
+    subject: '您有一封新邮件！',              // Subject line
+    text: content,                    // plaintext body
+    html: content,  // html body
+    attachments :[
+          // {
+          //     filename: 'img1.png',            // 改成你的附件名
+          //     path: 'public/images/img1.png',  // 改成你的附件路径
+          //     cid : '00000001'                 // cid可被邮件使用
+          // }
+
+    ]
+};
+
+transporter.sendMail(mailOptions, function(error, info){
+    if(error){
+      return res.send({
+        status: 400,
+        content: '',
+        err_msg: '发送错误：'+error
+      })
+    }
+    console.log('Message sent: ' + info.response);
+    res.send({
+      status: 200,
+      content: 'ok',
+      err_msg: ''
+    })
 });
 
 
 
 
+
+});
+
+
 /* 主页 */
 router.get('/', function(req, res, next) {
-  console.log('进来了', req.ip)
-
   if(!req.cookies.token){
     res.redirect('/login');
   }
-
   res.render('index', {
     version :  timeStamp
    });
 });
 
 
-
-/* 上传附件图片 */
+/****
+* 上传附件图片接口
+*
+*
+*****/
 router.post('/upload/*', function(req, res, next){
-  if(req.cookies.token){
+  if(!req.cookies.token){
     return res.send({
+      ok: false,
       status: 400,
-      err_msg: 'token 不合法'
+      msg: 'token 不合法'
     });
   }else{
     next();
   }
 }).post('/upload/file',  upload.array("file", 3), function(req, res, next) {
   res.send({
+      ok: true,
       status: 200,
       content: '上传ok!',
-      err_msg: ''
+      msg: ''
     });
 });
+
+
+
+
 
 Function.prototype.method=function(name,fn){
     if(!this.prototype[name]){
