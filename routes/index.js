@@ -18,8 +18,9 @@ router.get('/login', function(req, res, next) {
 
 /* 主页 */
 router.get('/', function(req, res, next) {
+  console.log('cookies---',req.cookies)
   if(!req.cookies.token){
-    res.redirect('/login');
+    return res.redirect('/login');
   }
   res.render('index', {
     version :  timeStamp
