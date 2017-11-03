@@ -99,7 +99,7 @@ var util= {
       if (keys) {
         var options={
           path:'/',
-          domain: domain
+          domain: null
         };
         if(location.hostname.indexOf('192.168') > -1){
             options.domain=null;//
