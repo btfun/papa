@@ -230,8 +230,8 @@ gulp.task('default', ['copylib','minifyjs','mini_home_css', 'minifyhtml','minify
 gulp.task('online', function(callback) {
 
    runSequence(
-       "online_replaceSuffix",               //- 替换.js .html后缀
-       "online_replace_requireConfPath",      //- 路径替换为md5后的路径
+      //  "online_replaceSuffix",               //- 替换.js .html后缀
+      //  "online_replace_requireConfPath",      //- 路径替换为md5后的路径
        "replacehtml",
        callback);
 });
