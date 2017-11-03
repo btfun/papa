@@ -17,7 +17,6 @@ var  gulp = require('gulp'),
      notify = require('gulp-notify'),
      debug = require('gulp-debug'),
      plumber = require('gulp-plumber'),
-     sourcemaps = require('gulp-sourcemaps'),
      jshint=require('gulp-jshint'),//语法检查
      through2= require('through2'),//路径替换
      runSequence = require('run-sequence'),//顺序执行
