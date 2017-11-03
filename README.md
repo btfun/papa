@@ -25,3 +25,7 @@ cd  node-v8.0.0-linux-x64/bin && ls
 现在 node 和 npm 还不能全局使用，做个链接
 ln -s /www/node-v8.0.0-linux-x64/bin/node /usr/local/bin/node
 ln -s /www/node-v8.0.0-linux-x64/bin/npm /usr/local/bin/npm
+
+
+npm install gulp -g
+ln -s /data/server/node-v8.7.0-linux-x64/bin/gulp /usr/local/bin/gulp

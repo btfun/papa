@@ -7,9 +7,6 @@ var  gulp = require('gulp'),
      minifyhtml = require('gulp-htmlmin'),//压缩html
      concat = require('gulp-concat'),//合并文件 css使用
      autoprefixer = require('gulp-autoprefixer'),//CSS浏览器前缀补全
-     imagemin = require('gulp-imagemin'),//图片压缩
-     imageminPngquant = require('imagemin-pngquant'),
-     imageminJpegtran = require('imagemin-jpegtran'),
     //  cache = require('gulp-cache'),
      changed = require('gulp-changed'),//只通过改变的文件
      rename = require('gulp-rename'),//重命名
@@ -181,12 +178,6 @@ gulp.task('minifyhtml', function(cb) {
 //图片压缩
 gulp.task('minifyimages', function() {
   return gulp.src(paths.images.src)
-  // .pipe((imagemin({
-  //         optimizationLevel: 5, //类型：Number  默认：3  取值范围：0-7（优化等级）
-  //         progressive: true, //类型：Boolean 默认：false 无损压缩jpg图片
-  //         svgoPlugins: [{removeViewBox: false}],//不要移除svg的viewbox属性
-  //         use: [imageminPngquant(),imageminJpegtran()] //使用pngquant深度压缩png图片的imagemin插件
-  //     })))
     .pipe(gulp.dest(paths.images.dest));
 
 });
