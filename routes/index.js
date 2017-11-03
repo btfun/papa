@@ -152,12 +152,10 @@ transporter.sendMail(mailOptions, function(error, info){
 *****/
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      console.log('--------====')
         cb(null, 'uploads');    // 保存的路径，备注：需要自己创建
     },
     filename: function (req, file, cb) {
         var extname = path.extname(file.originalname)||'.png';//获取文件扩展名
-        console.log('--------',extname)
         // 将保存文件名设置为 字段名 + 时间戳+文件扩展名，比如 logo-1478521468943.jpg
         cb(null, file.fieldname + '-' + Date.now() + extname);
     }

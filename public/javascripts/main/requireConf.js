@@ -11,10 +11,17 @@
  return {
    //////////////////lib//////////////////////
    text:        'javascripts/lib/requireJS/requireJS-text',
-   vue:         'javascripts/lib/vue/vue',
-   vueRouter:   'javascripts/lib/vue/vue-router/vue-router',
-   axios:       'javascripts/lib/vue/axios.min',
-   ELEMENT:     'javascripts/lib/element/element.min',
+   vue:         '//cdn.bootcss.com/vue/2.4.4/vue.min',
+  //  vue:         'javascripts/lib/vue/vue',
+
+   vueRouter:   '//cdn.bootcss.com/vue-router/2.7.0/vue-router.min',
+  //  vueRouter:   'javascripts/lib/vue/vue-router/vue-router.min',
+
+   axios:       '//cdn.bootcss.com/axios/0.16.2/axios.min',
+  //  axios:       'javascripts/lib/vue/axios.min',
+   ELEMENT:     '//cdn.bootcss.com/element-ui/1.4.6/index',
+  //  ELEMENT:     'javascripts/lib/element/element.min',
+
    iNotify:     'javascripts/lib/iNotify.min',
    vueH5Editor:     'javascripts/lib/vue-html5-editor',
 
