@@ -111,7 +111,7 @@ var util= {
               if(key==keys[i]){
                 (document.cookie = [
                     encodeURIComponent(key), '=',
-                    options.expires ? '; expires=-1' : '',
+                    '; expires=-1',
                     options.path    ? '; path=' + options.path : '',
                     options.domain  ? '; domain=' + options.domain : '',
                     options.secure  ? '; secure' : ''
@@ -120,7 +120,7 @@ var util= {
             }else{
               (document.cookie = [
                   encodeURIComponent(key), '=',
-                  options.expires ? '; expires=-1': '',
+                  '; expires=-1',
                   options.path    ? '; path=' + options.path : '',
                   options.domain  ? '; domain=' + options.domain : '',
                   options.secure  ? '; secure' : ''
