@@ -87,7 +87,6 @@ var util= {
           options.secure  ? '; secure' : ''
       ].join(''));
 
-
       //根目录设置cookie
       // var exdate=new Date();
       // exdate.setDate(exdate.getDate()+expiredays);
@@ -105,13 +104,16 @@ var util= {
         if(location.hostname.indexOf('192.168') > -1){
             options.domain=null;//
         }
+        var date=new Date();
+         date.setTime(date.getTime()-100000);
+
         console.log('clearCookie',keys)
           for (var i = keys.length; i--;){
             if(key){
               if(key==keys[i]){
                 (document.cookie = [
                     encodeURIComponent(key), '=',
-                    '; expires=-1',
+                    '; expires='+date.toGMTString(),
                     options.path    ? '; path=' + options.path : '',
                     options.domain  ? '; domain=' + options.domain : '',
                     options.secure  ? '; secure' : ''
@@ -120,7 +122,7 @@ var util= {
             }else{
               (document.cookie = [
                   encodeURIComponent(key), '=',
-                  '; expires=-1',
+                  '; expires='+date.toGMTString(),
                   options.path    ? '; path=' + options.path : '',
                   options.domain  ? '; domain=' + options.domain : '',
                   options.secure  ? '; secure' : ''
