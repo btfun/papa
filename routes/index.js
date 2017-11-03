@@ -124,7 +124,7 @@ transporter.sendMail(mailOptions, function(error, info){
       console.log('=======================')
       console.log($.html())
       console.log( JSON.stringify(imgs))
-      console.log('=======================')
+      console.log(`============${error}===========`)
         res.send({
         status: 400,
         content: '',
