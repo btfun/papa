@@ -108,7 +108,7 @@ $(function(){
             var exdate=new Date();
                 exdate.setDate(exdate.getDate()+expiredays);
                 document.cookie= "token=" +escape(res.content)+
-                ((expiredays==null) ? "" : ";expires="+exdate.toGMTString())+";path=/";
+                ((expiredays==null) ? "" : ";expires="+exdate.toGMTString())+";path=/;domain="+location.hostname;
                 location.href='/';
           }else{
             $('#msg').text(res.err_msg)

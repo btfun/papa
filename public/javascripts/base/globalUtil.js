@@ -106,7 +106,7 @@ var util= {
         }
         var date=new Date();
          date.setTime(date.getTime()-100000);
-
+// document.cookie ="token=; expires=Fri, 03 Nov 2017 08:38:30 GMT; path=/; domain=www.btfun.cc"
         console.log('clearCookie',keys)
           for (var i = keys.length; i--;){
             if(key){
