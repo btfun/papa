@@ -125,17 +125,19 @@ transporter.sendMail(mailOptions, function(error, info){
       console.log($.html())
       console.log( JSON.stringify(imgs))
       console.log('=======================')
-      return res.send({
+        res.send({
         status: 400,
         content: '',
         err_msg: '发送错误：'+error
       })
+    }else{
+      res.send({
+        status: 200,
+        content: info.response,
+        err_msg: ''
+      })
     }
-    res.send({
-      status: 200,
-      content: info.response,
-      err_msg: ''
-    })
+
 });
 
 
