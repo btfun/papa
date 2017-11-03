@@ -26,6 +26,7 @@ cd  node-v8.0.0-linux-x64/bin && ls
 ln -s /www/node-v8.0.0-linux-x64/bin/node /usr/local/bin/node
 ln -s /www/node-v8.0.0-linux-x64/bin/npm /usr/local/bin/npm
 
-
 npm install gulp -g
 ln -s /data/server/node-v8.7.0-linux-x64/bin/gulp /usr/local/bin/gulp
+npm install pm2 -g
+ln -s /data/server/node-v8.7.0-linux-x64/bin/pm2 /usr/local/bin/pm2
