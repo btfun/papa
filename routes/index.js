@@ -4,27 +4,29 @@ var dateV=new Date();
 var timeStamp= 'v='+dateV.getFullYear()+(dateV.getMonth()+1)+dateV.getDate()+dateV.getHours()+dateV.getMinutes();
 var multer  = require('multer');
 var path  = require('path');
+var cheerio = require('cheerio');
 
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads');    // 保存的路径，备注：需要自己创建
-    },
-    filename: function (req, file, cb) {
-        var extname = path.extname(file.originalname);//获取文件扩展名
-        // 将保存文件名设置为 字段名 + 时间戳+文件扩展名，比如 logo-1478521468943.jpg
-        cb(null, file.fieldname + '-' + Date.now() + extname);
-    }
-});
-var upload = multer({ storage: storage });
+
 
 /* 登录 */
 router.get('/login', function(req, res, next) {
-console.log('登录', req.ip)
-
   res.render('login', {
     version :  timeStamp
    });
 });
+
+
+/* 主页 */
+router.get('/', function(req, res, next) {
+  if(!req.cookies.token){
+    res.redirect('/login');
+  }
+  res.render('index', {
+    version :  timeStamp
+   });
+});
+
+
 /****
 * 登录验证接口
 *
@@ -89,34 +91,48 @@ var transporter = nodemailer.createTransport({
     }
 });
 
+const $ = cheerio.load(content);
+var imgs=[];
+$('img').each(function(i,e){
+  var imgname=$(this).attr('src').split('/');
+      imgname=imgname[imgname.length-1];
+  var code=Math.random().toString(36).substr(2, 20);
+  imgs.push({
+    filename: imgname,
+    path: 'uploads/'+imgname,
+    cid : code
+  })
+  $(this).attr('src','cid:'+code)
+})
+
+/**
+* 循环发送邮件 独立的事件中处理
+*/
+
 var mailOptions = {
     from: '"小蜜蜂 " <'+emailObj.user+'>', // sender address
-    to: '625672881@qq.com', // list of receivers
-    subject: '您有一封新邮件！',              // Subject line
-    text: content,                    // plaintext body
-    html: content,  // html body
-    attachments :[
-          // {
-          //     filename: 'img1.png',            // 改成你的附件名
-          //     path: 'public/images/img1.png',  // 改成你的附件路径
-          //     cid : '00000001'                 // cid可被邮件使用
-          // }
-
-    ]
+    to: emailFrom,            // list of receivers
+    subject: '您有一封新邮件！',        // Subject line
+    text: $.text(),                    // plaintext body
+    html: $.html(),                    // html body
+    attachments : imgs
 };
 
 transporter.sendMail(mailOptions, function(error, info){
     if(error){
+      console.log('=======================')
+      console.log($.html())
+      console.log( JSON.stringify(imgs))
+      console.log('=======================')
       return res.send({
         status: 400,
         content: '',
         err_msg: '发送错误：'+error
       })
     }
-    console.log('Message sent: ' + info.response);
     res.send({
       status: 200,
-      content: 'ok',
+      content: info.response,
       err_msg: ''
     })
 });
@@ -128,22 +144,25 @@ transporter.sendMail(mailOptions, function(error, info){
 });
 
 
-/* 主页 */
-router.get('/', function(req, res, next) {
-  if(!req.cookies.token){
-    res.redirect('/login');
-  }
-  res.render('index', {
-    version :  timeStamp
-   });
-});
-
-
 /****
 * 上传附件图片接口
 *
 *
 *****/
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      console.log('--------====')
+        cb(null, 'uploads');    // 保存的路径，备注：需要自己创建
+    },
+    filename: function (req, file, cb) {
+        var extname = path.extname(file.originalname)||'.png';//获取文件扩展名
+        console.log('--------',extname)
+        // 将保存文件名设置为 字段名 + 时间戳+文件扩展名，比如 logo-1478521468943.jpg
+        cb(null, file.fieldname + '-' + Date.now() + extname);
+    }
+});
+var upload = multer({ storage: storage });
+
 router.post('/upload/*', function(req, res, next){
   if(!req.cookies.token){
     return res.send({
@@ -155,10 +174,24 @@ router.post('/upload/*', function(req, res, next){
     next();
   }
 }).post('/upload/file',  upload.array("file", 3), function(req, res, next) {
+  console.log('-------',req.files)
+
+
+var list=[];
+if(req.files){
+  req.files.forEach((item)=>{
+    list.push({
+      destination: item.destination,
+      filename: item.filename
+    })
+
+  })
+}
+
   res.send({
       ok: true,
       status: 200,
-      content: '上传ok!',
+      content: list,
       msg: ''
     });
 });

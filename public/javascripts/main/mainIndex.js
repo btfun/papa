@@ -28,7 +28,7 @@ define(function(require){
           url: '/upload/file',
           headers: {},
           params: {},
-          fieldName: {}
+          fieldName: 'file'
       },
       compress: {
           width: 1600,
@@ -37,11 +37,11 @@ define(function(require){
       },
       uploadHandler(responseText){
            //default accept json data like  {ok:false,msg:"unexpected"} or {ok:true,data:"image url"}
-           var json = JSON.parse(responseText)
-           if (!json.ok) {
-               alert(json.msg)
+           var data = JSON.parse(responseText)
+           if (200!==data.status) {
+               alert(data.msg)
            } else {
-               return json.data
+               return data.content[0].filename
            }
        }
    }
@@ -75,7 +75,7 @@ const routers = new VueRouter({
   * 三: 应用全局的XHR请求配置
   *
   **/
- 
+
   //添加请求拦截器
   axios.interceptors.request.use((config)=>{
        //在发送请求之前做某事

@@ -179,24 +179,17 @@ var util= {
       }
 
       if(_options.status==res.data.status){
-        try {
-          (function(data){
-              setTimeout(()=>{
-                success && success(data)
-              },0)
-          })(res.data.content ? $.parseJSON(res.data.content):null)
 
-        } catch (e) {
-          console.log('数据解码',e)
+        (function(data){
           setTimeout(()=>{
-            success && success(res.data.content ?util.decryptDataToObject(res.data.content):null)
+            success && success(data)
           },0)
-        }
+        })(res.data.content)
 
       }else{
         if(_options.silence){
           //统一处理异常
-          console.error(`接口返回：${res.data.errorMessage}`);
+          // console.error(`接口返回：${res.data.err_msg}`);
         }
         if(fail && typeof fail==='function'){
             //自定义处理异常

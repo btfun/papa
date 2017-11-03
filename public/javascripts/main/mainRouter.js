@@ -8,7 +8,7 @@ define(function(require){
   */
 
    const routes = [
-     { path:'', redirect:'/home' },
+     { path:'', redirect:'/home/mail/setUp' },
      //店铺主页部分
      { path: '/home',            component: resolve => require(['home.indexModule'],resolve),
        children: [

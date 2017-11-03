@@ -204,7 +204,7 @@ gulp.task('server',function(cb){
         started = true;
         browserSync.init({
             files: ['./views/**/*.*'], //, './public/**/*.*'（和浏览器注入脚本不能同事使用）
-            proxy:'http://127.0.0.1:3000', //设置代理运行本地的3000端口
+            proxy:'http://127.0.0.1:80', //设置代理运行本地的3000端口
             port:8080, //设置browser-sync的运行端口号
             browser: 'chrome',
             notify: false
