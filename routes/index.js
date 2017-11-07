@@ -98,7 +98,7 @@ if(!filepath && !tag ){
     err_msg: '发送错误：参数 filepath 有误'
   })
 }
-var maillsit=excelfun(filepath);
+
 
 var transporter = nodemailer.createTransport({
     host: emailObj.host,
@@ -135,11 +135,12 @@ var mailOptions = {
     html: $.html(),                    // html body
     attachments : imgs
 };
-
+var maillsit=[];
 if(tag){
   //预览邮件
-  maillsit=[];
   maillsit.push(emailFrom)
+}else{
+  maillsit=excelfun(filepath);
 }
 
 maillsit.forEach((item)=>{
