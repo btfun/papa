@@ -99,7 +99,6 @@ if(!filepath && !tag ){
   })
 }
 var maillsit=excelfun(filepath);
-console.log(maillsit)
 
 var transporter = nodemailer.createTransport({
     host: emailObj.host,
@@ -128,14 +127,6 @@ $('img').each(function(i,e){
 /**
 * 循环发送邮件 独立的事件中处理
 */
-maillsit=[];
-
-maillsit.push(emailFrom)
-
-maillsit.forEach((item)=>{
-  console.log(`===========${item}===`)
-})
-
 var mailOptions = {
     from: '"小蜜蜂 " <'+emailObj.user+'>', // sender address
     to: emailFrom,            // list of receivers
@@ -144,6 +135,16 @@ var mailOptions = {
     html: $.html(),                    // html body
     attachments : imgs
 };
+
+if(tag){
+  //预览邮件
+  maillsit=[];
+  maillsit.push(emailFrom)
+}
+
+maillsit.forEach((item)=>{
+  console.log(`===========${item}===`)
+})
 
 senderMail(maillsit, transporter,mailOptions, res)
 
