@@ -35,14 +35,15 @@ module.exports ={
       ""
     ]
   },
-  //server 配置
-  SERVER: {
-    TARGET: 'http:192.168.2.247:8080', //可多条配置
-    ZK_HOST: '192.168.20.110:2181',
-    SERVICE_ROOT_PATH: '/service/discovery',
-    ROUTE_KEY: 'microservice',
-    SERVICE_NAME: '',
-    API_NAME: ''
-  }
+  googleDo:[
+    ".com", ".hk", ".as", ".im", ".com.co", ".co.uz", ".com", ".hk", ".com", ".hk" 
+  ],
+  UA:[
+    { "chrome" : "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36"},
+    { "360"  :   "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36"},
+    { "edge" :   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.79 Safari/537.36 Edge/14.14393"},
+    { "uc"   :   "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 UBrowser/6.0.1471.3 Safari/537.36"}
+
+  ]
 
 }

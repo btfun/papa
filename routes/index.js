@@ -5,7 +5,7 @@ var timeStamp= 'v='+dateV.getFullYear()+(dateV.getMonth()+1)+dateV.getDate()+dat
 var multer  = require('multer');
 var path  = require('path');
 var cheerio = require('cheerio');
-
+var excelfun = require('./excel');
 
 
 /* 登录 */
@@ -23,6 +23,13 @@ router.get('/', function(req, res, next) {
     return res.redirect('/login');
   }
   res.render('index', {
+    version :  timeStamp
+   });
+});
+
+router.get('/test', function(req, res, next) {
+
+  res.render('test', {
     version :  timeStamp
    });
 });
@@ -74,13 +81,25 @@ router.post('/send/email', function(req, res, next) {
 
 var emailFrom=req.param('from');
 var content=req.param('content');
-if(!emailFrom || !content){
+var tag=req.param('tag');
+var filepath=req.param('filepath');
+
+if(!emailFrom || !content  ){
   return res.send({
     status: 400,
     content: '',
     err_msg: '发送错误：参数有误'
   })
 }
+if(!filepath && !tag ){
+  return res.send({
+    status: 400,
+    content: '',
+    err_msg: '发送错误：参数 filepath 有误'
+  })
+}
+var maillsit=excelfun(filepath);
+console.log(maillsit)
 
 var transporter = nodemailer.createTransport({
     host: emailObj.host,
@@ -109,6 +128,13 @@ $('img').each(function(i,e){
 /**
 * 循环发送邮件 独立的事件中处理
 */
+maillsit=[];
+
+maillsit.push(emailFrom)
+
+maillsit.forEach((item)=>{
+  console.log(`===========${item}===`)
+})
 
 var mailOptions = {
     from: '"小蜜蜂 " <'+emailObj.user+'>', // sender address
@@ -119,32 +145,62 @@ var mailOptions = {
     attachments : imgs
 };
 
-transporter.sendMail(mailOptions, function(error, info){
-    if(error){
-      console.log('=======================')
-      console.log($.html())
-      console.log( JSON.stringify(imgs))
-      console.log(`============${error}===========`)
-        res.send({
-        status: 400,
-        content: '',
-        err_msg: '发送错误：'+error
-      })
-    }else{
-      res.send({
-        status: 200,
-        content: info.response,
-        err_msg: ''
-      })
-    }
-
-});
-
-
-
+senderMail(maillsit, transporter,mailOptions, res)
 
 
 });
+
+
+function senderMail(maillsit, transporter,mailOptions, res){
+
+  Promise.all(maillsit.map((item,ins)=>{
+          return new Promise(function(resolve, reject){
+           mailOptions=Object.assign(mailOptions, {
+              to: item
+           })
+
+          transporter.sendMail(mailOptions, function(error, info){
+              if(error){
+                console.log(`============${error}===========`)
+                //异常
+                reject({
+                  url:item.url,
+                  status: 400,
+                  error: error,
+                  content: ''
+                })
+
+              }else{
+                //执行
+                resolve({
+                  status: 200,
+                  content: info.response,
+                  err_msg: ''
+                })
+              }
+          });
+
+      })
+  })).then(function(results){
+          var success=0;
+          results.forEach((item)=>{
+            if(200==item.status){
+              success++;
+            }
+          })
+
+          res.send({
+            status: 200,
+            content: {
+              total: maillsit.length,
+              success: success,
+              fail: maillsit.length-success,
+            },
+            err_msg: ''
+          })
+  });
+
+}
 
 
 /****
@@ -175,26 +231,23 @@ router.post('/upload/*', function(req, res, next){
     next();
   }
 }).post('/upload/file',  upload.array("file", 3), function(req, res, next) {
-  console.log('-------',req.files)
+  // console.log('-------',req.files)
+      var list=[];
+      if(req.files){
+        req.files.forEach((item)=>{
+          list.push({
+            destination: item.destination,
+            filename: item.filename
+          })
+        })
+      }
 
-
-var list=[];
-if(req.files){
-  req.files.forEach((item)=>{
-    list.push({
-      destination: item.destination,
-      filename: item.filename
-    })
-
-  })
-}
-
-  res.send({
-      ok: true,
-      status: 200,
-      content: list,
-      msg: ''
-    });
+      res.send({
+          ok: true,
+          status: 200,
+          content: list,
+          msg: ''
+        });
 });
 
 

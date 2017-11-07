@@ -30,3 +30,7 @@ npm install gulp -g
 ln -s /data/server/node-v8.7.0-linux-x64/bin/gulp /usr/local/bin/gulp
 npm install pm2 -g
 ln -s /data/server/node-v8.7.0-linux-x64/bin/pm2 /usr/local/bin/pm2
+
+git 安装
+yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel
+http://www.jianshu.com/p/1608889b7d2d

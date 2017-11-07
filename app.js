@@ -6,8 +6,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var template = require('art-template');
 var os = require('os');
+var fs = require('fs');
 var app = express();
-
+var schedule = require('node-schedule');
 
 // 视图引擎设置
 template.config('base', '');
@@ -17,6 +18,28 @@ template.config('openTag', '[[');
 template.config('closeTag', ']]');
 template.config('cache', false);
 //template.config('compress', true);
+
+var rule = new schedule.RecurrenceRule();
+rule.hour = 1;
+rule.minute = 0;
+//每天凌晨1:00执行该定时任务
+var j = schedule.scheduleJob(rule, function(){
+  console.log('Today is recognized by Rebecca Black!');
+
+  function deletefile(path){
+    var files = fs.readdirSync(path);
+    files.forEach(function (itm, index) {
+      var filepath=path + '/'+itm
+      fs.unlink(filepath, function(){
+        console.log(filepath,'delete ok !');
+      })
+    })
+  }
+
+  deletefile('./uploads')
+
+});
+
 
 
 // service discovery start
@@ -38,6 +61,7 @@ app.use(express.static(path.join(__dirname, 'uploads')));
 
 app.use('/', require('./routes/index'));
 
+var papa = require('./routes/papa')();
 
 
 // catch 404 and forward to error handler

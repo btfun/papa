@@ -23,7 +23,11 @@
   //  ELEMENT:     'javascripts/lib/element/element.min',
 
    iNotify:     'javascripts/lib/iNotify.min',
-   vueH5Editor:     'javascripts/lib/vue-html5-editor',
+   vueH5Editor: 'javascripts/lib/vue-html5-editor',
+   jquery:      'javascripts/lib/jquery.min',
+
+   webuploaderCss:      'stylesheets/lib/webuploader',
+   webuploader: 'javascripts/lib/upload/webuploader.min',
 
    cookiebase64: 'javascripts/lib/cookie.base64.min',
    //base

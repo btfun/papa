@@ -6,7 +6,7 @@ return {
   template: require('text!home.indexTmpl.html'),
   data (){
     return {
-      active: 0||Number(localStorage.getItem('menu_active')||0)
+      active: 0||Number(sessionStorage.getItem('menu_active')||0)
     }
   },
   created:function(){
@@ -30,7 +30,7 @@ return {
         default:
           that.active=0;
       }
-      localStorage.setItem('menu_active',that.active)
+      sessionStorage.setItem('menu_active',that.active)
       console.log(that.active)
     }
   },
