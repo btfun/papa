@@ -5,28 +5,15 @@
 module.exports ={
   //redis 配置文件
   redis: {
-    client1:{
-      name: 'BeidouRedis1',
-      host: '192.168.20.113',
-      port: '6379',
-      timeout: '5000',
-      password: 'mljia'
-    },
-    client2:{
-      name: 'BeidouRedis2',
-      host: '192.168.20.114',
-      port: '6379',
-      timeout: '5000',
-      password: 'mljia'
-    }
+
   },
   //email 配置文件
   email: {
-    host : "smtp.exmail.qq.com",
-    port : 25,
-    user : "devtest@mljia.cn",
-    pass : "beauty123",
-    from : "devtest@mljia.cn",
+    host : "smtp-mail.outlook.com",
+    port : 587,
+    user : "battle1989@hotmail.com",
+    pass : "guobin1989",
+    from : "battle1989@hotmail.com",
     //收件人列表
     receivers   : [
       "battle@mljia.cn",
@@ -36,7 +23,7 @@ module.exports ={
     ]
   },
   googleDo:[
-    ".com", ".hk", ".as", ".im", ".com.co", ".co.uz", ".com", ".hk", ".com", ".hk" 
+    ".com", ".hk", ".as", ".im", ".com.co", ".co.uz", ".com", ".hk", ".com", ".hk"
   ],
   UA:[
     { "chrome" : "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36"},

@@ -79,7 +79,7 @@ const routers = new VueRouter({
   //添加请求拦截器
   axios.interceptors.request.use((config)=>{
        //在发送请求之前做某事
-       config.timeout=2000;
+       config.timeout=20000;
        if(!config.params)config.params={};
        config.params.token=globalUtil.util.getCookie('token');//增加token参数
        return config;

@@ -76,6 +76,30 @@ if(name && pwd){
 var nodemailer = require('nodemailer');
 var conf = require("../conf");
 var emailObj=conf.email;
+// console.log('-----',emailObj)
+// var transporter = nodemailer.createTransport({
+//     host: emailObj.host,
+//     port: emailObj.port,
+//     secure: false, // use SSL
+//     auth: {
+//         user: emailObj.user,
+//         pass: emailObj.pass
+//     }
+// });
+// transporter.sendMail({
+//   from: '"小蜜蜂 " <'+emailObj.user+'>', // sender address
+//   to: '625672881@qq.com',            // list of receivers
+//   subject: '您有一封新邮件！',        // Subject line
+//   text: '99999',                    // plaintext body
+//   html: '<p>99999</p>'                    // html body
+// }, (error, info) => {
+//     if (error) {
+//         return console.log(error);
+//     }
+//     console.log(`Message: ${info.messageId}`);
+//     console.log(`sent: ${info.response}`);
+// });
+
 
 router.post('/send/email', function(req, res, next) {
 
