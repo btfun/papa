@@ -112,7 +112,12 @@ return {
                   filepath: that.filepath
                 }).then((res)=>{
                       globalUtil.util.callback(res, (data)=>{
-
+                        if(tag==='pre'){
+                          return that.$message({
+                            type: 'success',
+                            message: `总邮件：${data.total}，成功：${data.success}，失败：${data.fail}`
+                          });
+                        }
                         that.filecode=data.code;
                         localStorage.setItem('filecode', data.code);
                         that.$message({

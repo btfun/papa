@@ -158,29 +158,30 @@ var maillsit=[];
 if(tag){
   //预览邮件
   maillsit.push(emailFrom)
+  senderMail(maillsit, transporter,mailOptions, res)
 }else{
   maillsit=excelfun(filepath);
+  md5.update(account+Date.now())
+  var code=md5.digest('hex').toUpperCase();
+  console.log('---------',code)
+  senderMail(maillsit, transporter,mailOptions, code)
+  res.send({
+    status: 200,
+    content: {
+      account:account,
+      code: code
+    },
+    err_msg: ''
+  })
+
 }
 
-maillsit.forEach((item)=>{
-  console.log(`===========${item}===`)
-})
+// maillsit.forEach((item)=>{
+//   console.log(`===========${item}===`)
+// })
 
 
-md5.update(account+Date.now())
-var code=md5.digest('hex').toUpperCase();
-console.log('---------',code)
-senderMail(maillsit, transporter,mailOptions, code)
 
-
-res.send({
-  status: 200,
-  content: {
-    account:account,
-    code: code
-  },
-  err_msg: ''
-})
 // proxy()
 
 });
@@ -245,21 +246,34 @@ function senderMail(maillsit, transporter,mailOptions, code){
               success++;
             }
           })
-
-          fs.writeFile(path.join(__dirname, `../report/${code}.txt`),
-          JSON.stringify({
+          if(typeof code ==='string'){
+            fs.writeFile(path.join(__dirname, `../report/${code}.txt`),
+            JSON.stringify({
+                  total: maillsit.length,
+                  success: success,
+                  fail: maillsit.length-success,
+            }), (err) => {
+                  if(err){
+                      console.log('err:' + err);
+                  } else {
+                      console.log('文件写入成功');
+                  }
+            });
+          }else{
+            res.send({
+              status: 200,
+              content: {
                 total: maillsit.length,
                 success: success,
                 fail: maillsit.length-success,
-          }), (err) => {
-                if(err){
-                    console.log('err:' + err);
-                } else {
-                    console.log('文件写入成功');
-                }
-          });
+              },
+              err_msg: ''
+            })
 
- 
+          }
+
+
+
   });
 
 }
