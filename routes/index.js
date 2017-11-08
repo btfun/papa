@@ -260,7 +260,7 @@ function senderMail(maillsit, transporter,mailOptions, code){
                   }
             });
           }else{
-            res.send({
+            code.send({
               status: 200,
               content: {
                 total: maillsit.length,
