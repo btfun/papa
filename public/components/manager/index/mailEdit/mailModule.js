@@ -12,7 +12,17 @@ return {
         content: '',
         toPreMail: '',
         filepath: '',
-        list: [{name:'sss'},{name:'ppp'}]
+        filecode:'',
+        list: [{name:'sss'},{name:'ppp'}],
+        mailFirstData: {
+          host: '',
+          port: '',
+          account: '',
+          password: '',
+          passwordstr:'',
+          pwdoff: true,
+          toggle: false
+        }
 
     }
   },
@@ -22,12 +32,23 @@ return {
     setTimeout(()=>{
     that.initUploadExcel();
     },100)
+    var mailFirstDatastr=localStorage.getItem('mailFirstData');
+
+    if(mailFirstDatastr)that.mailFirstData=JSON.parse(mailFirstDatastr)
 
     console.log(that.list)
   },
   methods:{
     updateData(val){
       that.content=val;
+    },
+    saveSetUp(){
+      that.mailFirstData.passwordstr='';
+      localStorage.setItem('mailFirstData',JSON.stringify(that.mailFirstData));
+      that.$message({
+        type: 'success',
+        message: `保存Ok`
+      });
     },
     sendMail(tag){
       //发送预览邮件
@@ -38,7 +59,19 @@ return {
          message: '邮件内容不能为空'
         });
       }
+
+
+      if(!that.mailFirstData.host || !that.mailFirstData.port || !that.mailFirstData.account || !that.mailFirstData.password){
+        return that.$message({
+         type: 'error',
+         message: '发件人邮箱设置不能为空'
+        });
+      }
+      that.mailFirstData.passwordstr=window.btoa(that.mailFirstData.password)
+
+
       var tips='群发邮件至excel中邮箱?';
+
       if(tag==='pre'){
         tips='发送邮件至预览邮箱?';
         if(!that.toPreMail){
@@ -67,16 +100,25 @@ return {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+
                 that.$http.post('/send/email',{
                   content: that.content,
                   from: that.toPreMail,
+                  host: that.mailFirstData.host,
+                  port: that.mailFirstData.port,
+                  account: that.mailFirstData.account,
+                  passwordstr: that.mailFirstData.passwordstr,
                   tag: tag,
                   filepath: that.filepath
                 }).then((res)=>{
                       globalUtil.util.callback(res, (data)=>{
+
+                        that.filecode=data.code;
+                        localStorage.setItem('filecode', data.code);
                         that.$message({
                           type: 'success',
-                          message: `总邮件：${data.total}，成功：${data.success}，失败：${data.fail}`
+                          message: '系统正在发送.请保管好【发送报告下载码】'
+                          // message: `总邮件：${data.total}，成功：${data.success}，失败：${data.fail}`
                         });
                       },(data)=>{
 

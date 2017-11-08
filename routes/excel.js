@@ -35,15 +35,7 @@ console.log('worksheet',start, end ,rows)
     }
 
   }
-
-
-
-    //
-    //
-    // console.log('worksheet', worksheet['B1'].v)
-    // console.log('worksheet', worksheet['C1'].v)
-    // console.log('worksheet', worksheet['D1'].v)
-    // console.log('worksheet', worksheet['E1'].v)
+ 
 
   }
 

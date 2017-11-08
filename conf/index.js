@@ -11,9 +11,9 @@ module.exports ={
   email: {
     host : "smtp-mail.outlook.com",
     port : 587,
-    user : "battle1989@hotmail.com",
-    pass : "guobin1989",
-    from : "battle1989@hotmail.com",
+    // user : "battle1989@hotmail.com",
+    // pass : "guobin1989",
+    // from : "battle1989@hotmail.com",
     //收件人列表
     receivers   : [
       "battle@mljia.cn",

@@ -1,5 +1,6 @@
 *.iml
 dist/
+report/
 uploads/
 node_modules/
 .idea/

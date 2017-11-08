@@ -4,9 +4,14 @@ var dateV=new Date();
 var timeStamp= 'v='+dateV.getFullYear()+(dateV.getMonth()+1)+dateV.getDate()+dateV.getHours()+dateV.getMinutes();
 var multer  = require('multer');
 var path  = require('path');
+var fs  = require('fs');
 var cheerio = require('cheerio');
 var excelfun = require('./excel');
+var crypto=require('crypto');
+var md5=crypto.createHash("md5");
 
+// var EventProxy = require('eventproxy');
+// var proxy = new EventProxy();
 
 /* 登录 */
 router.get('/login', function(req, res, next) {
@@ -76,30 +81,6 @@ if(name && pwd){
 var nodemailer = require('nodemailer');
 var conf = require("../conf");
 var emailObj=conf.email;
-// console.log('-----',emailObj)
-// var transporter = nodemailer.createTransport({
-//     host: emailObj.host,
-//     port: emailObj.port,
-//     secure: false, // use SSL
-//     auth: {
-//         user: emailObj.user,
-//         pass: emailObj.pass
-//     }
-// });
-// transporter.sendMail({
-//   from: '"小蜜蜂 " <'+emailObj.user+'>', // sender address
-//   to: '625672881@qq.com',            // list of receivers
-//   subject: '您有一封新邮件！',        // Subject line
-//   text: '99999',                    // plaintext body
-//   html: '<p>99999</p>'                    // html body
-// }, (error, info) => {
-//     if (error) {
-//         return console.log(error);
-//     }
-//     console.log(`Message: ${info.messageId}`);
-//     console.log(`sent: ${info.response}`);
-// });
-
 
 router.post('/send/email', function(req, res, next) {
 
@@ -108,7 +89,7 @@ var content=req.param('content');
 var tag=req.param('tag');
 var filepath=req.param('filepath');
 
-if(!emailFrom || !content  ){
+if((!emailFrom || !content) &&  tag ){
   return res.send({
     status: 400,
     content: '',
@@ -123,14 +104,28 @@ if(!filepath && !tag ){
   })
 }
 
+var host=req.param('host');
+var port=req.param('port');
+var account=req.param('account');
+var passwordstr=req.param('passwordstr');
+if(!host || !port || !account || !passwordstr){
+  return res.send({
+    status: 400,
+    content: '',
+    err_msg: '发送错误：发件人邮箱有误'
+  })
+}
+var password = new Buffer(passwordstr,'base64').toString();
+
+// console.log(host,port,account,passwordstr,password)
 
 var transporter = nodemailer.createTransport({
-    host: emailObj.host,
-    port: emailObj.port,
+    host: host||emailObj.host,
+    port: port||emailObj.port,
     secure: false, // use SSL
     auth: {
-        user: emailObj.user,
-        pass: emailObj.pass
+        user: account||emailObj.user,
+        pass: password||emailObj.pass
     }
 });
 
@@ -152,7 +147,7 @@ $('img').each(function(i,e){
 * 循环发送邮件 独立的事件中处理
 */
 var mailOptions = {
-    from: '"小蜜蜂 " <'+emailObj.user+'>', // sender address
+    from: '"小蜜蜂 " <'+ (account||emailObj.user)+'>', // sender address
     to: emailFrom,            // list of receivers
     subject: '您有一封新邮件！',        // Subject line
     text: $.text(),                    // plaintext body
@@ -171,40 +166,76 @@ maillsit.forEach((item)=>{
   console.log(`===========${item}===`)
 })
 
-senderMail(maillsit, transporter,mailOptions, res)
 
+md5.update(account+Date.now())
+var code=md5.digest('hex').toUpperCase();
+console.log('---------',code)
+senderMail(maillsit, transporter,mailOptions, code)
+
+
+res.send({
+  status: 200,
+  content: {
+    account:account,
+    code: code
+  },
+  err_msg: ''
+})
+// proxy()
 
 });
 
 
-function senderMail(maillsit, transporter,mailOptions, res){
+function jishu(){
+
+  for (var i = 0; i < 10; i++) {
+     (function(i){
+       setTimeout(()=>{
+
+         console.log(`---------------${i}`)
+
+       },i*1000)
+     })(i)
+  }
+
+}
+
+
+function senderMail(maillsit, transporter,mailOptions, code){
 
   Promise.all(maillsit.map((item,ins)=>{
           return new Promise(function(resolve, reject){
-           mailOptions=Object.assign(mailOptions, {
-              to: item
-           })
 
-          transporter.sendMail(mailOptions, function(error, info){
-              if(error){
-                console.log(`============${error}===========`)
-                //异常
-                reject({
-                  url:item.url,
-                  status: 400,
-                  error: error,
-                  content: ''
+           (function(item, ins){
+             setTimeout(()=>{
+                mailOptions=Object.assign(mailOptions, {
+                   to: item
                 })
+               console.log(`==?====sending======${mailOptions.to}==?=========`)
+              transporter.sendMail(mailOptions, function(error, info){
+                  if(error){
+                    console.log(`============${error}===========`)
+                    //异常
+                    reject({
+                      status: 400,
+                      error: error,
+                      content: ''
+                    })
 
-              }else{
-                //执行
-                resolve({
-                  status: 200,
-                  content: info.response,
-                  err_msg: ''
-                })
-              }
-          });
+                  }else{
+                    console.log(`============${info.response}===========`)
+                    //执行
+                    resolve({
+                      status: 200,
+                      content: info.response,
+                      err_msg: ''
+                    })
+                  }
+              });
+
+            }, 1000 * ins * 6 )
+
+          })(item, ins)
 
       })
   })).then(function(results){
@@ -215,15 +246,20 @@ function senderMail(maillsit, transporter,mailOptions, res){
             }
           })
 
-          res.send({
-            status: 200,
-            content: {
-              total: maillsit.length,
-              success: success,
-              fail: maillsit.length-success,
-            },
-            err_msg: ''
-          })
+          fs.writeFile(path.join(__dirname, `../report/${code}.txt`),
+          JSON.stringify({
+                total: maillsit.length,
+                success: success,
+                fail: maillsit.length-success,
+          }), (err) => {
+                if(err){
+                    console.log('err:' + err);
+                } else {
+                    console.log('文件写入成功');
+                }
+          });
+
+ 
   });
 
 }

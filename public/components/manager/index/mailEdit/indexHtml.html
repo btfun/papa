@@ -2,21 +2,40 @@
   <div>
       <p>邮件编辑</p>
       <div class="fl item">
-        <div style="width:720px;" >
+        <div style="width:860px;" >
 
-         <vue-html5-editor :content="content" :height="360" @change="updateData" :auto-height="true">
-         </vue-html5-editor>
+         <vue-html5-editor :content="content" :height="360" @change="updateData" :auto-height="true"></vue-html5-editor>
 
         </div>
         <div class="btns-panel">
+
           <ul>
+            <li>1.</li>
+            <li><P>HOST ：</P><el-input type="text" v-model="mailFirstData.host" placeholder="输入smtp地址" class="ipt220"></el-input></li>
+            <li><P>PORT ：</P><el-input type="number" v-model="mailFirstData.port" placeholder="输入端口号" class="ipt220"></el-input></li>
+            <li><P>邮件地址：</P><el-input type="email" v-model="mailFirstData.account" placeholder="输入邮件地址" class="ipt220"></el-input></li>
+            <li><P>邮件密码：</P>
+              <el-input type="password" v-model="mailFirstData.password" placeholder="输入邮件密码" class="ipt220"></el-input>
+            </li>
+            <li><el-button @click="saveSetUp">保存临时设置</el-button></li>
+          </ul>
+          <ul>
+            <li>2.</li>
             <li><el-input type="email" v-model="toPreMail" placeholder="输入预览邮件地址"></el-input></li>
             <li><el-button @click="sendMail('pre')">发送预览邮件</el-button></li>
-            <li><div id="filePicker" :title="filepath">导入EXCEL邮箱文件</div></li>
-            <li><el-button type="primary" @click="sendMail">发送邮件</el-button></li>
-            <li><span>0</span>/<span>4000</span></li>
+            <!-- <li><div id="filePicker" :title="filepath">导入EXCEL邮箱文件</div></li> -->
+            <!-- <li><el-button type="primary" @click="sendMail('')">发送邮件</el-button></li> -->
+            <!-- <li><span>0</span>/<span>4000</span></li> -->
           </ul>
-
+          <ul>
+            <li>3.</li>
+            <!-- <li><el-input type="email" v-model="toPreMail" placeholder="输入预览邮件地址"></el-input></li> -->
+            <!-- <li><el-button @click="sendMail('pre')">发送预览邮件</el-button></li> -->
+            <li><div id="filePicker" :title="filepath">导入EXCEL邮箱文件</div></li>
+            <li><el-button type="primary" @click="sendMail('')">发送邮件</el-button></li>
+            <li><el-input type="text"  placeholder="输入下载码" ></el-input></li>
+            <li><el-button type="primary" @click="sendMail('')">下载发送报告</el-button></li>
+          </ul>
         </div>
       </div>
       <div class="fl item">
