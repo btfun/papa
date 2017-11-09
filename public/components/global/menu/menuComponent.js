@@ -21,6 +21,7 @@ define(function(require){
       },
       quit(){
         globalUtil.util.clearCookie('token', location.hostname);
+        sessionStorage.clear();
         location.href="/login"
       }
     }

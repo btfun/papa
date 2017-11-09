@@ -83,6 +83,7 @@ var conf = require("../conf");
 var emailObj=conf.email;
 
 router.post('/send/email', function(req, res, next) {
+// var startTime=new Date().getTime();
 
 var emailFrom=req.param('from');
 var content=req.param('content');
@@ -106,6 +107,8 @@ if(!filepath && !tag ){
 
 var host=req.param('host');
 var port=req.param('port');
+var thetitle=req.param('thetitle');
+var nicename=req.param('nicename');
 var account=req.param('account');
 var passwordstr=req.param('passwordstr');
 if(!host || !port || !account || !passwordstr){
@@ -147,9 +150,10 @@ $('img').each(function(i,e){
 * 循环发送邮件 独立的事件中处理
 */
 var mailOptions = {
-    from: '"小蜜蜂 " <'+ (account||emailObj.user)+'>', // sender address
-    to: emailFrom,            // list of receivers
-    subject: '您有一封新邮件！',        // Subject line
+    fromMail: account,
+    from: `${nicename} <${account}> `, // sender address
+    to: emailFrom,                 // list of receivers
+    subject: `${thetitle}`,        // Subject line
     text: $.text(),                    // plaintext body
     html: $.html(),                    // html body
     attachments : imgs
@@ -159,47 +163,32 @@ if(tag){
   //预览邮件
   maillsit.push(emailFrom)
   senderMail(maillsit, transporter,mailOptions, res)
+// var endTime=new Date().getTime();
+// console.log(`耗时-----${endTime-startTime}`)
+
 }else{
   maillsit=excelfun(filepath);
-  md5.update(account+Date.now())
-  var code=md5.digest('hex').toUpperCase();
-  console.log('---------',code)
-  senderMail(maillsit, transporter,mailOptions, code)
+  // md5.update(account+Date.now())
+  // var code=md5.digest('hex').toUpperCase();
+  var time=(new Date().format("yyyy-MM-dd hh:mm:ss"))
+  console.log('---------',time)
+
+  senderMail(maillsit, transporter,mailOptions, time)
   res.send({
     status: 200,
     content: {
       account:account,
-      code: code
+      code: time
     },
     err_msg: ''
   })
 
 }
 
-// maillsit.forEach((item)=>{
-//   console.log(`===========${item}===`)
-// })
-
-
-
-// proxy()
 
 });
 
 
-function jishu(){
-
-  for (var i = 0; i < 10; i++) {
-     (function(i){
-       setTimeout(()=>{
-
-         console.log(`---------------${i}`)
-
-       },i*1000)
-     })(i)
-  }
-
-}
 
 
 function senderMail(maillsit, transporter,mailOptions, code){
@@ -208,6 +197,7 @@ function senderMail(maillsit, transporter,mailOptions, code){
           return new Promise(function(resolve, reject){
 
            (function(item, ins){
+
              setTimeout(()=>{
                 mailOptions=Object.assign(mailOptions, {
                    to: item
@@ -247,18 +237,22 @@ function senderMail(maillsit, transporter,mailOptions, code){
             }
           })
           if(typeof code ==='string'){
-            fs.writeFile(path.join(__dirname, `../report/${code}.txt`),
-            JSON.stringify({
-                  total: maillsit.length,
-                  success: success,
-                  fail: maillsit.length-success,
-            }), (err) => {
-                  if(err){
-                      console.log('err:' + err);
-                  } else {
-                      console.log('文件写入成功');
-                  }
+
+            transporter.sendMail({
+              from: mailOptions.fromMail,
+              to: mailOptions.fromMail,
+              subject: `${code}邮件发送回执`,
+              text: `邮件总量：${maillsit.length}，发送成功${success}，发送失败${maillsit.length-success}`
+            }, function(error, info){
+                if(error){
+                  console.log(`=======回执发送失败=====${error}===========`)
+                  //异常
+                }else{
+                  console.log(`=======回执发送成功=====${info.response}===========`)
+                  //执行
+                }
             });
+
           }else{
             code.send({
               status: 200,

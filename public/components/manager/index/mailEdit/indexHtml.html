@@ -2,12 +2,19 @@
   <div>
       <p>邮件编辑</p>
       <div class="fl item">
-        <div style="width:860px;" >
 
+        <div style="width:860px;" >
+          <div  >
+            <el-input type="text"  v-model="thetitle" placeholder="邮件主题" style="width:260px;"></el-input>
+            &nbsp;&nbsp;&nbsp;
+            <el-input type="text" v-model="mailFirstData.nicename" placeholder="发件人昵称" style="width:260px;"></el-input>
+          </div>
+          <br>
          <vue-html5-editor :content="content" :height="360" @change="updateData" :auto-height="true"></vue-html5-editor>
 
         </div>
         <div class="btns-panel">
+
 
           <ul>
             <li>1.</li>

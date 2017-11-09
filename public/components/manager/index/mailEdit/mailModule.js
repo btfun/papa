@@ -9,6 +9,7 @@ return {
   template: require('text!home.mailEdit.indexTmpl.html'),
   data:function(){
     return {
+        thetitle:'',
         content: '',
         toPreMail: '',
         filepath: '',
@@ -17,6 +18,7 @@ return {
         mailFirstData: {
           host: '',
           port: '',
+          nicename:'',
           account: '',
           password: '',
           passwordstr:'',
@@ -36,7 +38,6 @@ return {
 
     if(mailFirstDatastr)that.mailFirstData=JSON.parse(mailFirstDatastr)
 
-    console.log(that.list)
   },
   methods:{
     updateData(val){
@@ -44,6 +45,7 @@ return {
     },
     saveSetUp(){
       that.mailFirstData.passwordstr='';
+      if(!that.mailFirstData.nicename)that.mailFirstData.nicename='';
       localStorage.setItem('mailFirstData',JSON.stringify(that.mailFirstData));
       that.$message({
         type: 'success',
@@ -59,6 +61,19 @@ return {
          message: '邮件内容不能为空'
         });
       }
+      if(!that.thetitle){
+        return that.$message({
+         type: 'error',
+         message: '邮件主题不能为空'
+        });
+      }
+      if(!that.mailFirstData.nicename){
+        return that.$message({
+         type: 'error',
+         message: '发件人昵称不能为空'
+        });
+      }
+
 
 
       if(!that.mailFirstData.host || !that.mailFirstData.port || !that.mailFirstData.account || !that.mailFirstData.password){
@@ -102,10 +117,12 @@ return {
       }).then(() => {
 
                 that.$http.post('/send/email',{
+                  thetitle: that.thetitle,
                   content: that.content,
                   from: that.toPreMail,
                   host: that.mailFirstData.host,
                   port: that.mailFirstData.port,
+                  nicename: that.mailFirstData.nicename,
                   account: that.mailFirstData.account,
                   passwordstr: that.mailFirstData.passwordstr,
                   tag: tag,
@@ -118,12 +135,9 @@ return {
                             message: `总邮件：${data.total}，成功：${data.success}，失败：${data.fail}`
                           });
                         }
-                        that.filecode=data.code;
-                        localStorage.setItem('filecode', data.code);
                         that.$message({
                           type: 'success',
-                          message: '系统正在发送.请保管好【发送报告下载码】'
-                          // message: `总邮件：${data.total}，成功：${data.success}，失败：${data.fail}`
+                          message: '系统正在发送,完成后会发送回执到发件箱'
                         });
                       },(data)=>{
 
