@@ -188,7 +188,11 @@ if(tag){
 
 });
 
-
+function GetRandomNum(Min,Max){
+  var Range = Max - Min;
+  var Rand = Math.random();
+  return(Min + Math.round(Rand * Range));
+}
 
 
 function senderMail(maillsit, transporter,mailOptions, code){
@@ -197,12 +201,13 @@ function senderMail(maillsit, transporter,mailOptions, code){
           return new Promise(function(resolve, reject){
 
            (function(item, ins){
+              var randomNum=GetRandomNum(0, (ins+ins));
 
              setTimeout(()=>{
                 mailOptions=Object.assign(mailOptions, {
                    to: item
                 })
-               console.log(`==?====sending======${mailOptions.to}==?=========`)
+               console.log(`==?====sending======${mailOptions.to}==?===${randomNum}======`)
               transporter.sendMail(mailOptions, function(error, info){
                   if(error){
                     console.log(`============${error}===========`)
@@ -223,8 +228,8 @@ function senderMail(maillsit, transporter,mailOptions, code){
                     })
                   }
               });
-
-            }, 1000 * ins * 6 )
+ 
+            }, 1000 * ins * 8 * randomNum)
 
           })(item, ins)
 
