@@ -157,36 +157,47 @@ return {
     },
     initUploadExcel(){
 
-      var uploader = WebUploader.create({
-          auto: true,
-          server: '/upload/file',
-          pick: '#filePicker',
-          chunked: true, //开启分块上传
-          chunkSize: 10 * 1024 * 1024,
-          chunkRetry: 3,//网络问题上传失败后重试次数
-          threads: 1, //上传并发数
-          fileNumLimit :1,
-          fileSizeLimit: 2 * 1024 * 1024,//最大2M
-          fileSingleSizeLimit: 2 * 1024 * 1024,
-          resize: false, //不压缩
-          accept: {
-              title: 'excel',
-              // extensions: 'gif,jpg,jpeg,bmp,png,xlsx',
-              // mimeTypes: 'image/jpeg, image/png'
-              mimeTypes: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-          },
-          method:'POST',
-      });
+
+      function initUpload(){
+        return   WebUploader.create({
+                  auto: true,
+                  server: '/upload/file',
+                  pick: '#filePicker',
+                  chunked: true, //开启分块上传
+                  chunkSize: 10 * 1024 * 1024,
+                  chunkRetry: 3,//网络问题上传失败后重试次数
+                  threads: 1, //上传并发数
+                  fileNumLimit :1,
+                  fileSizeLimit: 2 * 1024 * 1024,//最大2M
+                  fileSingleSizeLimit: 2 * 1024 * 1024,
+                  resize: false, //不压缩
+                  accept: {
+                      title: 'excel',
+                      // extensions: 'gif,jpg,jpeg,bmp,png,xlsx',
+                      // mimeTypes: 'image/jpeg, image/png'
+                      mimeTypes: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                  },
+                  method:'POST',
+              });
+      }
+      var uploader =initUpload();
        // 文件上传成功，给item添加成功class, 用样式标记上传成功。
        uploader.on( 'uploadSuccess', function( file ,res) {
          if(res.content){
            var filepath=res.content[0].destination+'/'+res.content[0].filename;
            that.filepath=filepath;
 
+           console.log(that.filepath)
+
          }
-
-
        });
+
+       uploader.on("uploadFinished", function () {
+
+       uploader.destroy();
+       uploader =initUpload();
+
+      });
 
     }
 

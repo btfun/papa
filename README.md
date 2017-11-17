@@ -32,6 +32,9 @@ cd  node-v8.0.0-linux-x64/bin && ls
 ln -s /www/node-v8.0.0-linux-x64/bin/node /usr/local/bin/node
 ln -s /www/node-v8.0.0-linux-x64/bin/npm /usr/local/bin/npm
 
+删除
+rm -rf 目录
+
 npm install gulp -g
 ln -s /data/server/node-v8.7.0-linux-x64/bin/gulp /usr/local/bin/gulp
 npm install pm2 -g
