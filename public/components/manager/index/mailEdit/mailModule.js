@@ -157,9 +157,10 @@ return {
     },
     initUploadExcel(){
 
+      var uploader;
 
       function initUpload(){
-        return   WebUploader.create({
+        uploader= WebUploader.create({
                   auto: true,
                   server: '/upload/file',
                   pick: '#filePicker',
@@ -179,25 +180,23 @@ return {
                   },
                   method:'POST',
               });
+              // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+              uploader.on( 'uploadSuccess', function( file ,res) {
+                  if(res.content){
+                    var filepath=res.content[0].destination+'/'+res.content[0].filename;
+                    that.filepath=filepath;
+                    console.log(that.filepath)
+                  }
+              });
+
+              uploader.on("uploadFinished", function () {
+                uploader.destroy();
+                initUpload();
+             });
       }
-      var uploader =initUpload();
-       // 文件上传成功，给item添加成功class, 用样式标记上传成功。
-       uploader.on( 'uploadSuccess', function( file ,res) {
-         if(res.content){
-           var filepath=res.content[0].destination+'/'+res.content[0].filename;
-           that.filepath=filepath;
 
-           console.log(that.filepath)
+      initUpload();
 
-         }
-       });
-
-       uploader.on("uploadFinished", function () {
-
-       uploader.destroy();
-       uploader =initUpload();
-
-      });
 
     }
 
